@@ -13,7 +13,6 @@ def add_product():
     user_id_input = input("Please enter the product ID you want: ")
     user_name_input = input("Please enter the product name: ")
     user_amount_input = int(input("Please enter the product amount: "))
-    assert user_amount_input < 100, "Amount cannot exceed 100."
     user_price_input = float(input("Please enter the product price: "))
     added_product_list= [user_id_input, user_name_input, user_amount_input,user_price_input]
     print(f"The new product is: ",added_product_list)
@@ -52,4 +51,13 @@ def update_product():
         print(f'The product now becomes: {update_product_list}')
         with open("products.csv", "a+", newline="") as fp:
             wr = csv.writer(fp, dialect='excel')
-            wr.writerow(update_product_list) 
+            wr.writerow(update_product_list)
+
+def search_product(product_ID):
+     with open('products.csv') as csv_file:
+        file = list(csv.reader(csv_file))
+        for row in range(len(file)):
+            if product_ID in file[row]:
+                print(f'The product is {file[row][1]}\nThe quantity is {file[row][2]}, and  the price is {file[row][3]}')
+
+# search_product('368')

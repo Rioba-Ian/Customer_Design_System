@@ -48,7 +48,7 @@ def add_customer():
         wr.writerow(added_customer_list) 
     
 
-add_customer()
+# add_customer()
 
 def update_customer():
     user_input_update = input("Please enter the customer ID you want to update details: ")
@@ -64,6 +64,8 @@ def update_customer():
         user_address_input_update = input("Please enter the new customer's address (e.g Mswambweni) you want: ")
         update_customer_list= [user_input_update, user_name_input_update, user_address_input_update]
         print(f'The customer now becomes: {update_customer_list}')
-        check_customer(parsed_list=update_customer_list)
+        with open("customers.csv", "a+", newline="") as fp:
+            wr = csv.writer(fp, dialect='excel')
+            wr.writerow(update_customer_list) 
 
-# update_customer()
+update_customer()
