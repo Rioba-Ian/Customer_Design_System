@@ -1,8 +1,12 @@
 from customer import all_customers, delete_customer, add_customer, update_customer
 from products import all_products, add_product,delete_product, update_product
+
+from purchase import purchase_item
 def menu():
     while True:
         print("""
+
+        WELCOME TO THE POS SYSTEM
 
         CUSTOMER
         1. Add a customer.
@@ -15,7 +19,12 @@ def menu():
         6. View all the products. 
         7. Delete a product in products. 
         8. Modify/update a product. 
-        9. Exit/Quit.        
+        
+        MAKE A PURCHASE
+        9. Make a purchase.
+        
+        EXIT
+        0. Exit the program.   
         """)
         ans = input("Enter your selection: ")
         if ans == '1':
@@ -43,6 +52,9 @@ def menu():
             print("You have selected update/modify a product from the record")
             update_product()
         elif ans == '9':
+            print("You have selected make a purchase")
+            purchase_item()
+        elif ans == '0':
             print("You have exited the program.")
             break
         else:

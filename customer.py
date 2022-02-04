@@ -1,6 +1,11 @@
 import csv
 
 # classes
+class Customer:
+    def __init__(self, id, name, address):
+        self.id = id
+        self.name = name
+        self.address = address
 
 def all_customers():
     

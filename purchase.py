@@ -1,9 +1,8 @@
+import os
 import csv
 
-from numpy import product
-from make_purchase import make_purchase
+# class Purchase
 
-from products import all_products, search_product
 
 purchases_made = []
 
@@ -11,8 +10,8 @@ space_small = """
               """
 
 space_big = """
-        
-        """
+            
+            """
 
 with open('products.csv','r+') as csv_file:
     file_product = csv.reader(csv_file)
@@ -22,23 +21,41 @@ with open('customers.csv','r+') as csv_file:
     file_customer = csv.reader(csv_file)
     data_customer = list(file_customer)
 
+with open("products.csv", "a+", newline="") as fp:
+    writer_product = csv.writer(fp, dialect='excel')
 
-# def not_zero(validate):
-#     # checks that the amount given is not zero or less than 0.
-#     if validate < 0:
-#         "You have entered a value less than zero. "
+
+# still trying to fix issues with customer not being present. 
+def check_customer():
+    customer_id_from_user = str(input("Enter customer id to purchase: "))
+    with open('customers.csv','r') as csv_file:
+        file_customer = csv.reader(csv_file)
+        data_customer = list(file_customer)
+        idx_data_customer = [item[0] for item in data_customer]
+        print(idx_data_customer)
+        for i in range(len(data_customer)):
+            if customer_id_from_user in idx_data_customer:
+                print()
+                return print("customer found.")
+            else:
+                print("Customer not found.enter a valid customer Id")
+                return check_customer()
+
+# check_customer()
 
 
 def purchase_item():
     customer_exists = False
     product_exists= False
-    total_purchase = 0
-    # print(space)
-    customer_id_from_user = input("Enter customer id to purchase: ")
+    # total_purchase = 0
+
+    customer_id_from_user = str(input("Enter customer id to purchase: "))
+
     for customer in range(len(data_customer)):
         if customer_id_from_user in data_customer[customer][0]:
             customer_exists = True
             print("Customer name is: ", data_customer[customer][1])
+            
 
     print(space_small)
     product_id_from_user = input("Enter product id to purchase: ")
@@ -59,13 +76,13 @@ def purchase_item():
                 quantity = int(data_product[i][2])
                 price = float(data_product[i][3])
                 if purchase_item_quantity > quantity:
-                    print(name + "can't be sold because the quantity in stock is lower than ordered."+str(quantity)+'\nPlace another quantity for the order.')
+                    print(name + " can't be sold because the quantity in stock is lower than ordered "+str(quantity)+'\nPlace another quantity for the order.')
                     purchase_item()
                 else:
                       cost = purchase_item_quantity * price
 
-                      purchases_made.append([product_id_from_user, name, quantity, cost])
-                      print(purchases_made)
+                      purchases_made.append([product_id_from_user, name, purchase_item_quantity, cost])
+                      print(f'Your purchase: {purchases_made}')
 
                       another_purchase = input("""
                       1. Check out with sale.
@@ -78,17 +95,38 @@ def purchase_item():
                       elif another_purchase == "2":
                         purchase_item()
 
-def update_stock():
-    new_list_item = []
-    updated_list_item = []
-    for purchase in range(len(purchases_made)):
-        update_ID = purchases_made[purchase][0]
-        quantity = purchases_made[purchase][3]
 
-        for product in range(len(data_product)):
-            if update_ID in data_product[product][0]:
-                new_list_item.append(product)
-                print(new_list_item)
+
+def update_stock():
+
+    for purchase in purchases_made:
+        product_ID = purchase[0]
+        cost_amount = purchase[2]
+
+        file = open('products.csv', 'r')
+        temp = open('temp_file.csv', 'w')
+
+        s = ' '
+
+        while(s):
+            s = file.readline()
+            L = s.split(',')
+            if len(s)>0:
+                if (L[0]) == product_ID:
+                    product_name = L[1]
+                    product_quantity = int(L[2])
+                    product_price = L[3]
+                    new_prod_quantity = product_quantity - cost_amount
+                    temp.write(str(product_ID)+','+product_name+','+str(new_prod_quantity)+','+str(product_price))
+                else:
+                    temp.write(s)
+        temp.close()
+        file.close()
+        os.remove('products.csv')
+        os.rename('temp_file.csv','products.csv')
+        print("Inventory updated.")
+        print("Stock remaining: "+str(new_prod_quantity))
+        break
 
 
 
@@ -99,6 +137,8 @@ def checking_out():
         total_spent += purchases_made[purchase][3]
     print(space_big)
     print(f'You have spent {total_spent}')
+    print(space_small)
+    
 
     customer_pay = float(input("Amount of cash given:"))
     if customer_pay < total_spent:
@@ -136,4 +176,4 @@ def checking_out():
 
 
 
-purchase_item()
+# purchase_item()
