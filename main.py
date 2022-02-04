@@ -1,5 +1,5 @@
 from customer import all_customers, delete_customer, add_customer, update_customer
-from products import all_products, add_product,delete_product
+from products import all_products, add_product,delete_product, update_product
 def menu():
     while True:
         print("""
@@ -31,14 +31,17 @@ def menu():
             print("You have selected Update customer's record")
             update_customer()
         elif ans == '5':
-            print("You have selected Update customer's record")
+            print("You have selected Insert a product into the record")
             add_product()
         elif ans == '6':
-            print("You have selected Update customer's record")
+            print("You have selected View all product records")
             all_products()
         elif ans == '7':
-            print("You have selected Update customer's record")
+            print("You have selected delete a product from the record")
             delete_product()
+        elif ans == '8':
+            print("You have selected update/modify a product from the record")
+            update_product()
         elif ans == '9':
             print("You have exited the program.")
             break

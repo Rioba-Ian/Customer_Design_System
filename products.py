@@ -46,7 +46,7 @@ def update_product():
                 
         user_name_input_update = input("Please enter the new product name you want: ")
         user_amount_input_update = input("Please enter the new product amount you want: ")
-        user_price_input_update = input("Please enter the new product amount you want: ")
+        user_price_input_update = input("Please enter the new product price you want: ")
         update_product_list= [user_input_update, user_name_input_update, user_amount_input_update, user_price_input_update]
         print(f'The product now becomes: {update_product_list}')
         with open("products.csv", "a+", newline="") as fp:
